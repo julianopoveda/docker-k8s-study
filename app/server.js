@@ -43,7 +43,7 @@ app.get("/:numero", function (req, res) {
 });
 
 app.post("/", function (req, res) {
-  var db = new sqlite3.Database(file);
+  var db = dbFactory.getConnection();
   db.run("insert into processos(numero, uf_sigla, cidade, reu, identidade, cliente, status) values($numero, $uf_sigla, $cidade, $reu, $identidade, $cliente, $status )", {
     $numero: req.body.numero,
     $uf_sigla: req.body.uf_sigla,
@@ -56,9 +56,12 @@ app.post("/", function (req, res) {
     if (err == null)
       res.status(202);
 
-    console.log(err);
-    res.send(err);
-    res.status(500);
+    else {
+
+      console.log(err);
+      res.send(err);
+      res.status(500);
+    }
   });
   res.send("Processo lançado");
 })
@@ -72,10 +75,11 @@ app.put("/status", function (req, res) {
     (err) => {
       if (err == null)
         res.send("Status Alterado");
-
-      console.log(err);
-      res.send(err);
-      res.status(500);
+      else {
+        console.log(err);
+        res.send(err);
+        res.status(500);
+      }
     });
 })
 
@@ -85,10 +89,11 @@ app.delete("/:numero", function (req, res) {
     (err) => {
       if (err == null)
         res.send("Processo excluido");
-
-      console.log(err);
-      res.send(err);
-      res.status(500);
+      else {
+        console.log(err);
+        res.send(err);
+        res.status(500);
+      }
     });
 })
 
