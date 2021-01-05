@@ -10,6 +10,8 @@ RUN apk add  --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.9/m
 
 RUN apk add npm
 
+WORKDIR /app
+
 COPY app .
 
 RUN npm install
