@@ -2,13 +2,15 @@ var express = require('express');
 var app = express();
 var sqlite3 = require("sqlite3");
 const bodyParser = require('body-parser');
+const cors = require('cors')
 
 app.use(express.static(__dirname + '/public'));
+app.use(cors());
 app.use(bodyParser.json());
 
 dbFactory = {
   getConnection: () => {
-    file = "juridico.db";
+    file = "../juridico.db";
     return new sqlite3.Database(file);
   }
 }
@@ -16,16 +18,18 @@ dbFactory = {
 
 app.get("/", function (req, res) {
   var db = dbFactory.getConnection();
-  db.serialize(function () {
-    processos = [];
-
-    db.each("select * from processos", function (err, row) {
-      processos.push(row);
-    }, function (err, rownumber) {
-      res.send(processos);
+  var sql = "select * from processos"
+  var params = []
+  db.all(sql, params, (err, rows) => {
+      if (err) {
+        res.status(400).json({"error":err.message});
+        return;
+      }
+      res.json({
+          "message":"success",
+          "data":rows
+      })
     });
-
-  });
 
   db.close();
 });
@@ -97,8 +101,8 @@ app.delete("/:numero", function (req, res) {
     });
 })
 
-app.listen('3000');
-console.log("Server running on port 3000");
+app.listen('3001');
+console.log("Server running on port 3001");
 
 
 class processo {
