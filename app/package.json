@@ -1,0 +1,20 @@
+{
+    "name": "juridico",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "directories": {
+        "lib": "lib"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "sqlite3": "^5.0.0"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "author": "Juliano Poveda",
+    "license": "ISC"
+}
